@@ -38,10 +38,8 @@ class ArgusCamera:
         self.camera = IArgusCamera_createArgusCamera(self.config)
 
     def read(self):
-        image = np.empty(list(self.video_converter_resolution)
-                         [::-1] + [self.channels], np.uint8)
+        image = np.empty(
+            list(self.video_converter_resolution)[::-1] + [self.channels],
+            np.uint8)
         self.camera.read(image.ctypes.data)
         return image[:, :, :3]
-
-    def get_gain_range(self):
-        return self.config.getGainRange()
