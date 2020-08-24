@@ -1,4 +1,4 @@
-set(TegraMM_ROOT /usr/src/tegra_multimedia_api)
+set(TegraMM_ROOT /usr/src/jetson_multimedia_api)
 set(TegraMM_FOUND FALSE)
 
 if(EXISTS ${TegraMM_ROOT})
