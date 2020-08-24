@@ -4,7 +4,7 @@ import subprocess
 
 this_dir = os.path.dirname(os.path.realpath(__file__))
 swig_file = os.path.join(this_dir, 'argus_camera/cpp.i')
-argus_include_dir = os.path.join(os.environ['HOME'], 'tegra_multimedia_api/include')
+argus_include_dir = os.path.join(os.environ['HOME'], 'jetson_multimedia_api/include')
 
 subprocess.call(['swig', '-DSWIGWORDSIZE64', '-c++', '-python', '-interface', '_argus_camera_cpp', swig_file])
 
