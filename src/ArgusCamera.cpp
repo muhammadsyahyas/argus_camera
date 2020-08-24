@@ -212,6 +212,17 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
     return nullptr;
   }
 
+// set gain range
+  status = iSourceSettings->setGainRange(Argus::Range<float>(
+    camera->mConfig.getGainRange()[0],
+    camera->mConfig.getGainRange()[1]
+  ));
+  if (Argus::STATUS_OK != status) {
+    if (info) {
+      *info = 30;
+    }
+    return nullptr;
+  }
 
   // configure stream settings
   auto iStreamSettings = interface_cast<IStreamSettings>(iRequest->getStreamSettings(camera->mStream.get()));
