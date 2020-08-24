@@ -31,8 +31,8 @@ class ArgusCamera:
         self.config.setGainRange(gain_range)
         self.config.setSourceClipRect(source_clip_rect)
         self.config.setExposureCompensation(0)
-        self.config.setAeLock(True)
-        # self.config.setSensorMode(sensor_mode)
+        self.config.setAeLock(False)
+        self.config.setSensorMode(sensor_mode)
         self.channels = 4
 
         self.camera = IArgusCamera_createArgusCamera(self.config)
