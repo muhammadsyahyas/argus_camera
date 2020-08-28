@@ -16,6 +16,7 @@ class ArgusCamera:
             exposure_time_range=(int(0), int(999999999)),
             source_clip_rect=(0.0, 0.0, 1.0, 1.0),
             gain_range=(0., 300.),
+            ae_regions=None,
             sensor_mode=0):
 
         self.device_id = device_id
@@ -33,6 +34,12 @@ class ArgusCamera:
         self.config.setExposureCompensation(0)
         self.config.setAeLock(False)
         self.config.setSensorMode(sensor_mode)
+        if ae_regions is not None:
+            aer_arr = np.asarray(ae_regions, dtype=np.float32)
+            aer_s = aer_arr.shape
+            if not (len(aer_s) == 2 and aer_s[0] and aer_s[1] == 5):
+                raise ValueError("ae_regions value error")
+            self.config.setAeRegions(ae_regions)
         self.channels = 4
 
         self.camera = IArgusCamera_createArgusCamera(self.config)
