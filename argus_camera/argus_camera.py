@@ -39,7 +39,7 @@ class ArgusCamera:
             aer_s = aer_arr.shape
             if not (len(aer_s) == 2 and aer_s[0] and aer_s[1] == 5):
                 raise ValueError("ae_regions value error")
-            self.config.setAeRegions(ae_regions)
+            self.config.setAeRegions(aer_arr.tolist())
         self.channels = 4
 
         self.camera = IArgusCamera_createArgusCamera(self.config)
