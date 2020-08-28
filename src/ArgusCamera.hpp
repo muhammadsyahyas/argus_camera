@@ -38,8 +38,8 @@ public:
   void setAeLock(bool AeLock) { mAeLock = AeLock; };
   bool getAeLock() { return mAeLock; };
 
-  void setAeRegions(std::vector<std::vector<float>> AeRegions) { mAeRegions = AeRegions; };
-  std::vector<std::vector<float>> getAeRegions() { return mAeRegions; };
+  void setAeRegions(std::vector<std::vector<float> > AeRegions) { mAeRegions = AeRegions; };
+  std::vector<std::vector<float> > getAeRegions() { return mAeRegions; };
 
   void setExposureTimeRange(std::vector<uint64_t> exposureTimeRange) { mExposureTimeRange = exposureTimeRange; };
   std::vector<uint64_t> getExposureTimeRange() { return mExposureTimeRange; };
@@ -54,7 +54,7 @@ public:
   std::vector<uint64_t> mFrameDurationRange;
   std::vector<uint64_t> mExposureTimeRange;
   std::vector<float> mGainRange;
-  std::vector<std::vector<float>> mAeRegions;
+  std::vector<std::vector<float> > mAeRegions;
   bool mAeLock;
   float mExposureCompensation;
   uint32_t mSensorMode;

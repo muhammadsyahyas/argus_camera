@@ -12,6 +12,7 @@ namespace std {
   %template (UInt32Vector) vector<uint32_t>;
   %template (UInt64Vector) vector<uint64_t>;
   %template (FloatVector) vector<float>;
+  %template (FloatVectorVector) vector<vector<float> >;
 }
 
 %{
