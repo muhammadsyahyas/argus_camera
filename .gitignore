@@ -4,3 +4,4 @@ __pycache__
 /argus_camera/cpp_wrap.cxx
 build
 dist
+.vscode
