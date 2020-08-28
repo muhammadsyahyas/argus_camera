@@ -203,7 +203,7 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   }
 
 // set autoexposure regions
-  if !(camera->mConfig.getAeRegions()).empty() {
+  if (!(camera->mConfig.getAeRegions()).empty()) {
     vector<Argus::AcRegion> AeRegions;
     for (vector<float>& AeRegion : camera->mConfig.getAeRegions())
       AeRegions.push_back(Argus::AcRegion(
