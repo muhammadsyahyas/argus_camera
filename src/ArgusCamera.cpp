@@ -25,7 +25,7 @@ public:
 private:
   ArgusCameraConfig mConfig;
 
-  Argus::UniqueObj<Argus::CameraDevice> mCameraDevice;
+  Argus::CameraDevice* mCameraDevice;
   Argus::UniqueObj<Argus::CaptureSession> mCaptureSession;
   Argus::UniqueObj<Argus::OutputStream> mStream;
   Argus::UniqueObj<EGLStream::FrameConsumer> mFrameConsumer;
