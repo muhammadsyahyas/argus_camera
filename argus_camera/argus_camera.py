@@ -1,4 +1,7 @@
+from typing import Optional, Tuple
+
 import numpy as np
+
 from .cpp import *
 
 
@@ -44,9 +47,28 @@ class ArgusCamera:
 
         self.camera = IArgusCamera_createArgusCamera(self.config)
 
-    def read(self):
+        self.read_error_code = -1
+
+    def read(self) -> Tuple[bool, Optional[np.ndarray]]:
+        """
+        Read frame from camera.
+
+        RETURN
+        -------
+        Tuple[bool, Optional[np.ndarray]]
+            bool
+                Status of the result of read call.
+                If failed, the error code could be obtained
+                from ``read_error_code`` attribute.
+            Optional[np.ndarray]
+                If read call success, return Numpy array
+                containing the frame from camera.
+                Otherwise, return None.
+        """
         image = np.empty(
             list(self.video_converter_resolution)[::-1] + [self.channels],
             np.uint8)
-        self.camera.read(image.ctypes.data)
-        return image[:, :, :3]
+        self.read_error_code = self.camera.read(image.ctypes.data)
+        if not self.read_error_code:
+            return True, image[:, :, :3]
+        return False, None
