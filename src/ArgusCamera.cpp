@@ -19,6 +19,8 @@ public:
   static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
   ~ArgusCamera();
   int read(uint8_t *data) override;
+  int getMaxAeRegions() override;
+  std::vector<uint32_t> getMinAeRegionSize() override;
 
 private:
   ArgusCameraConfig mConfig;
