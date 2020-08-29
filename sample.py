@@ -1,10 +1,14 @@
 import cv2
+
 from argus_camera import ArgusCamera
 
 
 def main():
-    camera = ArgusCamera()
-
+    camera = ArgusCamera(
+        stream_resolution=(1640, 1232),
+        video_converter_resolution=(640, 400))
+    print("MaxAeRegions:", camera.getMaxAeRegions())
+    print("MinAeRegionSize:", camera.getMinAeRegionSize())
     while True:
         ret, image = camera.read()
         if not ret:

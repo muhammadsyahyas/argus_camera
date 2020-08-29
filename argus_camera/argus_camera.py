@@ -72,3 +72,24 @@ class ArgusCamera:
         if not self.read_error_code:
             return True, image[:, :, :3]
         return False, None
+
+    def getMaxAeRegions(self) -> int:
+        """
+        RETURN
+        ------
+        int
+            Returns the maximum number of regions of interest
+            supported by AE. A value of 0 means that the entire
+            image is the only supported region of interest.
+        """
+        return self.camera.getMaxAeRegions()
+
+    def getMinAeRegionSize(self) -> Tuple[int, int]:
+        """
+        RETURN
+        ------
+        Tuple[int, int]
+            Returns the minimum size (width, height) of resultant
+            region required by AE.
+        """
+        return self.camera.getMinAeRegionSize()

@@ -89,5 +89,7 @@ public:
   static IArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
   virtual ~IArgusCamera() {};
   virtual int read(uint8_t *data) = 0;
+  virtual int getMaxAeRegions() = 0;
+  virtual std::vector<uint32_t> getMinAeRegionSize() = 0;
 };
 

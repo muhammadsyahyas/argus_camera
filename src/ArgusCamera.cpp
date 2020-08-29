@@ -23,6 +23,7 @@ public:
 private:
   ArgusCameraConfig mConfig;
 
+  Argus::UniqueObj<Argus::CameraDevice> mCameraDevice;
   Argus::UniqueObj<Argus::CaptureSession> mCaptureSession;
   Argus::UniqueObj<Argus::OutputStream> mStream;
   Argus::UniqueObj<EGLStream::FrameConsumer> mFrameConsumer;
@@ -82,10 +83,10 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
     }
     return nullptr;
   }
-  auto cameraDevice = devices[camera->mConfig.mDeviceId];
+  camera->mCameraDevice = devices[camera->mConfig.mDeviceId];
 
   // create capture session
-  camera->mCaptureSession = UniqueObj<CaptureSession>(iCameraProvider->createCaptureSession(cameraDevice));
+  camera->mCaptureSession = UniqueObj<CaptureSession>(iCameraProvider->createCaptureSession(camera->mCameraDevice));
   auto iCaptureSession = interface_cast<ICaptureSession>(camera->mCaptureSession);
   if (!iCaptureSession) {
     if (info) {
@@ -148,7 +149,7 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
 
   // configure source settings in request
   // 1. set sensor mode
-  auto iCameraProperties = interface_cast<ICameraProperties>(cameraDevice);
+  auto iCameraProperties = interface_cast<ICameraProperties>(camera->mCameraDevice);
   vector<SensorMode*> sensorModes;
   status = iCameraProperties->getAllSensorModes(&sensorModes);
   if (Argus::STATUS_OK != status ||
@@ -428,6 +429,19 @@ int ArgusCamera::read(uint8_t *data)
   NvBufferDestroy(fd);
 
   return 0;
+}
+
+int ArgusCamera::getMaxAeRegions()
+{
+  auto iCameraProperties = interface_cast<ICameraProperties>(mCameraDevice);
+  return iCameraProperties->getMaxAeRegions();
+}
+
+std::vector<uint32_t> ArgusCamera::getMinAeRegionSize()
+{
+  auto iCameraProperties = interface_cast<ICameraProperties>(mCameraDevice);
+  Argus::Size2D<uint32_t> MinAeRegionSize = iCameraProperties->getMinAeRegionSize();
+  return {MinAeRegionSize.width(), MinAeRegionSize.height()};
 }
 
 IArgusCamera * IArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int *info)
