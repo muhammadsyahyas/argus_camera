@@ -16,7 +16,7 @@ using namespace std;
 class ArgusCamera : public IArgusCamera
 {
 public:
-  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
+  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info);
   ~ArgusCamera();
   int read(uint8_t *data) override;
 
