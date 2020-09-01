@@ -4,6 +4,8 @@ from argus_camera import ArgusCamera
 
 def main():
     camera = ArgusCamera()
+    if not camera.isOpened():
+        raise RuntimeError("Failed initializing camera! (code: %d)" % camera.camera_error_code)
 
     while True:
         ret, image = camera.read()
