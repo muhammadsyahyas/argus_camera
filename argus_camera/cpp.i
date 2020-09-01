@@ -4,11 +4,11 @@
 %include <std_vector.i>
 %include <stdint.i>
 
-%typemap(in,numinputs=0) int *n (int temp) {
+%typemap(in,numinputs=0) int *info (int temp) {
   $1 = &temp;
 }
 
-%typemap(argout) int *n {
+%typemap(argout) int *info {
   PyObject *o;
   o = PyLong_FromLong(*$1);
   $result = SWIG_Python_AppendOutput($result, o);
