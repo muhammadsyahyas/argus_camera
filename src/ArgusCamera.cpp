@@ -30,6 +30,8 @@ private:
   Argus::UniqueObj<Argus::OutputStream> mStream;
   Argus::UniqueObj<EGLStream::FrameConsumer> mFrameConsumer;
   NvVideoConverter *mVideoConverter;
+  int MaxAeRegions;
+  std::vector<uint32_t> MinAeRegionSize;
 };
 
 uint32_t ArgusCameraConfig::getNumChannels()
@@ -150,8 +152,11 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   iRequest->enableOutputStream(camera->mStream.get());
 
   // configure source settings in request
-  // 1. set sensor mode
   auto iCameraProperties = interface_cast<ICameraProperties>(camera->mCameraDevice);
+  camera->MaxAeRegions = iCameraProperties->getMaxAeRegions();
+  Argus::Size2D<uint32_t> MinAeRegionSize = iCameraProperties->getMinAeRegionSize();
+  camera->MinAeRegionSize = {MinAeRegionSize.width(), MinAeRegionSize.height()};
+  // 1. set sensor mode
   vector<SensorMode*> sensorModes;
   status = iCameraProperties->getAllSensorModes(&sensorModes);
   if (Argus::STATUS_OK != status ||
@@ -435,15 +440,12 @@ int ArgusCamera::read(uint8_t *data)
 
 int ArgusCamera::getMaxAeRegions()
 {
-  auto iCameraProperties = interface_cast<ICameraProperties>(mCameraDevice);
-  return iCameraProperties->getMaxAeRegions();
+  return MaxAeRegions; 
 }
 
 std::vector<uint32_t> ArgusCamera::getMinAeRegionSize()
 {
-  auto iCameraProperties = interface_cast<ICameraProperties>(mCameraDevice);
-  Argus::Size2D<uint32_t> MinAeRegionSize = iCameraProperties->getMinAeRegionSize();
-  return {MinAeRegionSize.width(), MinAeRegionSize.height()};
+  return MinAeRegionSize;
 }
 
 IArgusCamera * IArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int *info)
