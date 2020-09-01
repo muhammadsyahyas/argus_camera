@@ -86,7 +86,7 @@ ArgusCameraConfig DEFAULT_DEVKIT_CONFIG()
 class IArgusCamera
 {
 public:
-  static IArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
+  static IArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info);
   virtual ~IArgusCamera() {};
   virtual int read(uint8_t *data) = 0;
   virtual int getMaxAeRegions() = 0;

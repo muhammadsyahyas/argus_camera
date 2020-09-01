@@ -16,7 +16,7 @@ using namespace std;
 class ArgusCamera : public IArgusCamera
 {
 public:
-  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
+  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info);
   ~ArgusCamera();
   int read(uint8_t *data) override;
   int getMaxAeRegions() override;
@@ -159,10 +159,15 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   // 1. set sensor mode
   vector<SensorMode*> sensorModes;
   status = iCameraProperties->getAllSensorModes(&sensorModes);
-  if (Argus::STATUS_OK != status ||
-      camera->mConfig.getSensorMode() >= sensorModes.size()) {
+  if (Argus::STATUS_OK != status) {
     if (info) {
       *info = 15;
+    }
+    return nullptr;
+  }
+  if (camera->mConfig.getSensorMode() >= sensorModes.size()) {
+    if (info) {
+      *info = 16;
     }
     return nullptr;
   }
@@ -256,7 +261,7 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   auto iStreamSettings = interface_cast<IStreamSettings>(iRequest->getStreamSettings(camera->mStream.get()));
   if (!iStreamSettings) {
     if (info) {
-      *info = 16;
+      *info = 40;
     }
     return nullptr;
   }
@@ -269,7 +274,7 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   ));
   if (Argus::STATUS_OK != status) {
     if (info) {
-      *info = 17;
+      *info = 41;
     }
     return nullptr;
   }
@@ -278,7 +283,7 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   status = iCaptureSession->repeat(request.get());
   if (Argus::STATUS_OK != status) {
     if (info) {
-      *info = 10; // failed to start repeating capture request
+      *info = 45; // failed to start repeating capture request
     }
     return nullptr;
   }
@@ -294,25 +299,25 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
 
   if (camera->mVideoConverter->output_plane.setupPlane(V4L2_MEMORY_DMABUF, 1, false, false) < 0) {
     if (info) {
-      *info = 11;
+      *info = 51;
     }
     return nullptr;
   }
   if (camera->mVideoConverter->capture_plane.setupPlane(V4L2_MEMORY_MMAP, 1, true, false) < 0) {
     if (info) {
-      *info = 12;
+      *info = 52;
     }
     return nullptr;
   }
   if (camera->mVideoConverter->output_plane.setStreamStatus(true) < 0) {
     if (info) {
-      *info = 13;
+      *info = 53;
     }
     return nullptr;
   }
   if (camera->mVideoConverter->capture_plane.setStreamStatus(true) < 0) {
     if (info) {
-      *info = 14;
+      *info = 54;
     }
     return nullptr;
   }

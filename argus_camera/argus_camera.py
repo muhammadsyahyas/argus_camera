@@ -45,9 +45,27 @@ class ArgusCamera:
             self.config.setAeRegions(aer_arr.tolist())
         self.channels = 4
 
-        self.camera = IArgusCamera_createArgusCamera(self.config)
+        ret = IArgusCamera_createArgusCamera(self.config)
+        if isinstance(ret, tuple):
+            self.camera, self.camera_error_code = ret
+        elif isinstance(ret, int):
+            self.camera = None
+            self.camera_error_code = ret
+        else:
+            raise NotImplementedError
 
         self.read_error_code = -1
+
+    def isOpened(self) -> bool:
+        """
+        Return the initialization status of the camera.
+
+        RETURN
+        ------
+        bool
+            If true, the camera successfully initialized.
+        """
+        return not self.camera_error_code
 
     def read(self) -> Tuple[bool, Optional[np.ndarray]]:
         """

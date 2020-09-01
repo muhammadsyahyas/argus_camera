@@ -7,8 +7,11 @@ def main():
     camera = ArgusCamera(
         stream_resolution=(1640, 1232),
         video_converter_resolution=(640, 400))
+    if not camera.isOpened():
+        raise RuntimeError("Failed initializing camera! (code: %d)" % camera.camera_error_code)
     print("MaxAeRegions:", camera.getMaxAeRegions())
     print("MinAeRegionSize:", camera.getMinAeRegionSize())
+
     while True:
         ret, image = camera.read()
         if not ret:
