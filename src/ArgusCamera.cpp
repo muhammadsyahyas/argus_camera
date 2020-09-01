@@ -16,7 +16,7 @@ using namespace std;
 class ArgusCamera : public IArgusCamera
 {
 public:
-  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info=nullptr);
+  static ArgusCamera *createArgusCamera(const ArgusCameraConfig &config, int *info);
   ~ArgusCamera();
   int read(uint8_t *data) override;
 
@@ -151,10 +151,15 @@ ArgusCamera *ArgusCamera::createArgusCamera(const ArgusCameraConfig &config, int
   auto iCameraProperties = interface_cast<ICameraProperties>(cameraDevice);
   vector<SensorMode*> sensorModes;
   status = iCameraProperties->getAllSensorModes(&sensorModes);
-  if (Argus::STATUS_OK != status ||
-      camera->mConfig.getSensorMode() >= sensorModes.size()) {
+  if (Argus::STATUS_OK != status) {
     if (info) {
       *info = 15;
+    }
+    return nullptr;
+  }
+  if (camera->mConfig.getSensorMode() >= sensorModes.size()) {
+    if (info) {
+      *info = 16;
     }
     return nullptr;
   }
