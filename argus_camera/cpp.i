@@ -4,15 +4,14 @@
 %include <std_vector.i>
 %include <stdint.i>
 
-%typemap(in) uint8_t* {
-  $1 = (uint8_t*) PyInt_AsLong($input);
+%typemap(in,numinputs=0) int *n (int temp) {
+  $1 = &temp;
 }
 
-
-%typemap(in,numinputs=0) int* n (int temp) "$1 = &temp;"
-
-%typemap(argout) int* n {
-  %append_output(PyLong_FromLong(*$1));
+%typemap(argout) int *n {
+  PyObject *o;
+  o = PyLong_FromLong(*$1);
+  $result = SWIG_Python_AppendOutput($result, o);
 }
 
 namespace std {
