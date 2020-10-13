@@ -7,7 +7,7 @@ def main():
         device_id=0,
         stream_resolution=(1640, 1232),
         video_converter_resolution=(1280, 800),
-        frame_duration_range=(1e9//15, 1e9//15),
+        frame_duration_range=(int(1e9//15), int(1e9//15)),
         exposure_time_range=(0, 9999999999999),
         source_clip_rect=(0., 0., 1., 1.),
         gain_range=(0., 300.),
