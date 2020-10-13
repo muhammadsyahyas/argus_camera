@@ -1,8 +1,7 @@
 from argus_camera import ArgusCamera
 
-
-def main():
-    camera = ArgusCamera(
+def get_camera():
+    return ArgusCamera(
         device_id=0,
         stream_resolution=(1640, 1232),
         video_converter_resolution=(1280, 800),
@@ -13,6 +12,9 @@ def main():
         ae_regions=[[0, 0, 300, 300, 1.0]],
         sensor_mode=0
     )
+
+def main():
+    camera = get_camera()
     if not camera.isOpened():
         raise RuntimeError(
             "Failed initializing camera! (code: %d)" % camera.camera_error_code)
