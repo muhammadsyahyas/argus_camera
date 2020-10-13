@@ -46,7 +46,7 @@ class ArgusCamera:
         self.channels = 4
 
         ret = IArgusCamera_createArgusCamera(self.config)
-        if isinstance(ret, tuple):
+        if isinstance(ret, (tuple, list)):
             self.camera, self.camera_error_code = ret
         elif isinstance(ret, int):
             self.camera = None
